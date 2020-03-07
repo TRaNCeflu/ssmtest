@@ -8,8 +8,18 @@
 <!--    boolean insertQuestion(Question question);-->
 <!--    boolean deleteQuestion(Integer id);-->
 <!--    boolean updateQuestion(Question question);-->
+<!--    List<Question> findAllQuestionForStudent();-->
+<!--    Question findQuestionByIdForStudent();-->
     <select id="findAllQuestionList" resultType="Question">
         SELECT * FROM question
+    </select>
+
+    <select id="findAllQuestionForStudent" resultType="Question">
+        select question_id,question_type,question_content from question
+    </select>
+
+    <select id="findQuestionByIdForStudent" resultType="Question">
+        select question_id,question_type,question_content from question where question_id = #{id}
     </select>
 
     <select id="findQuestionById" resultType="Question">

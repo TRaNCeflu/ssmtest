@@ -26,6 +26,9 @@ public class DaoTest {
     @Autowired
     private IQuestionService questionService;
 
+    @Autowired
+    private IQuestionDao questionDao;
+
     @Test
     public void Test01(){
         Student student = loginService.findStudent("201605010313");
@@ -44,7 +47,7 @@ public class DaoTest {
 
     @Test
     public void Test03(){
-        Question question = questionService.findQuestionById(1);
+        Question question = questionDao.findQuestionByIdForStudent(1004);
         System.out.println(question);
     }
 

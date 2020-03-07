@@ -15,10 +15,22 @@ public class QuestionController {
     @Autowired
     private IQuestionService questionService;
 
+    @GetMapping("/findAllQuestionForStudent")
+    public VResponse<List<Question>> findAllQuestionForStudent(){
+        List<Question> questionList = questionService.findAllQuestionForStudent();
+        return VResponse.success(questionList);
+    }
+
     @GetMapping("/findAllQuestion")
     public VResponse<List<Question>> findAllQuestion(){
         List<Question> questionList = questionService.findAllQuestionList();
         return VResponse.success(questionList);
+    }
+
+    @GetMapping("/findQuestionByIdForStudent")
+    public VResponse<Question> findQuestionByIdForStudent(@RequestParam("questionId")Integer id){
+        Question question = questionService.findQuestionByIdForStudent(id);
+        return VResponse.success(question);
     }
 
     @GetMapping("/findQuestionById")

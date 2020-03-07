@@ -27,7 +27,7 @@
                 </button>
             </div>
         </div>
-        <table class="table table-bordered table-hover" id ="questionListTable">
+        <table class="table table-bordered table-hover" id ="questionListTable" style="table-layout: fixed;width: 900px">
             <thead>
             <tr class="success">
                 <th>题目编号</th>
@@ -41,8 +41,8 @@
             <tr v-for = "item in dataInfo">
                 <td><a href="#" onclick = "openQuestionDetail(this.innerText);return false;" >{{item.questionId}}</a></td>
                 <td>{{item.questionType}}</td>
-                <td>{{item.questionContent}}</td>
-                <td>{{item.questionAnswer}}</td>
+                <td style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{item.questionContent}}</td>
+                <td style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">{{item.questionAnswer}}</td>
                 <td>#</td>
             </tr>
             
@@ -133,8 +133,8 @@
                 $("#questionTableBody").append('<tr>'
                     +'<td>'+"<a href='#' onclick = 'openQuestionDetail(this.innerText);return false;' >"+j["questionId"]+'</a>'+'</td>'
                     +'<td>'+j["questionType"]+'</td>'
-                    +'<td>'+j["questionContent"]+'</td>'
-                    +'<td>'+j["questionAnswer"]+'</td>'
+                    +'<td style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">'+j["questionContent"]+'</td>'
+                    +'<td style="white-space: nowrap;text-overflow: ellipsis;overflow: hidden;">'+j["questionAnswer"]+'</td>'
                     +'<td>'+'#'+'</td>'
                     +'</tr>');
             }

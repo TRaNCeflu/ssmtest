@@ -20,6 +20,16 @@ public class QuestionServiceImpl implements IQuestionService {
     }
 
     @Override
+    public List<Question> findAllQuestionForStudent() {
+        return questionDao.findAllQuestionForStudent();
+    }
+
+    @Override
+    public Question findQuestionByIdForStudent(Integer id) {
+        return questionDao.findQuestionByIdForStudent(id);
+    }
+
+    @Override
     public Question findQuestionById(Integer id) {
         return questionDao.findQuestionById(id);
     }

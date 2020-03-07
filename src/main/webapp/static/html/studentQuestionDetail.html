@@ -18,7 +18,7 @@
     <script src="../js/axios.min.js"></script>
 
 
-    <title>添加题目</title>
+    <title>题目信息</title>
     <style>
         .bgColor{
             background-color:rgba(243,66,111,0.15)
@@ -52,17 +52,17 @@
 
         <div class="panel panel-default" style="margin-bottom: 0px">
             <h4 class="panel panel-heading h4font">
-                添加题目
-                <small>（*星号是必填项）</small>
+                题目信息
+               
             </h4>
 
             <div class="panel-body">
                 <div class="form-group">
                     <label class="col-sm-1 control-label"><span style="color: red;font-weight: bold">＊</span>题目ID</label>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" id = "questionId" readonly = "readonly" placeholder="题目ID自动设置">
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" id = "questionId" readonly = "readonly"  >
                     </div>
-                    <label class="control-label">（题目编号）</label>
+                   
                 </div>
 
                 <div class="form-group">
@@ -70,7 +70,7 @@
                     <div class="col-sm-8">
                         <textarea type="text" class="form-control" id="questionContent" rows="12" placeholder="题目描述"></textarea>
                     </div>
-                    <label class="control-label">（题目内容）</label>
+                    
                 </div>
 
 
@@ -100,12 +100,12 @@
                 </div> -->
 
                 <div class="form-group">
-                    <label class="col-sm-1 control-label">设置答案</label>
+                    <label class="col-sm-1 control-label">答案</label>
                     <div class="col-sm-8">
-                        <textarea type = 'text' class="form-control" id = "questionAnswer" rows="4" placeholder="答案描述"></textarea>
-                        <!-- <input type="text" class="form-control" id = "questionAnswer" placeholder="答案描述"> -->
+                        <textarea type = "text" class="form-control" id = "questionAnswer" rows = "8" placeholder="填写答案"></textarea>
+                        <!-- <input type="text" class="form-control" id = "questionAnswer" > -->
                     </div>
-                    <label class="control-label">（答案）</label>
+                   
                 </div>
 
 
@@ -113,9 +113,9 @@
         </div>
 
         <br>
-        <div >
+        <div class="form-group">
             <div class="col-sm-offset-5 col-sm-1">
-                <button type ="button" class="btn btn-primary" onclick="insertBtn()">新增题目</button>
+                <button type="button" class="btn btn-primary" onclick="submitBtn()">提交答案</button>
             </div>
 
             <div class="col-sm-1">
@@ -146,35 +146,54 @@
         }
     }
 
-    function insertBtn(){
-        let questionContent = document.getElementById("questionContent").value;
-        let questionAnswer = document.getElementById("questionAnswer").value;
-        let questionId = "";
-        let questionType = "";
-        if(questionContent === "" || questionAnswer === ""){
-            alert("输入不能为空");
-            return;
-        }
-        axios.post(`http://127.0.0.1:8080/ssmtest/question/insertQuestion`,
-            {
-                questionId: questionId,
-                questionContent: questionContent,
-                questionAnswer: questionAnswer,
-                questionType : questionType
-            }
-        )
-            .then(res => {
-                if (res.data.code === 1) {
-                    alert("添加成功");
-                } else {
-                    alert('添加失败');
-                }
-            })
-            .catch(res => {
-            })
+    function initial(){
+        //alert(window.localStorage.getItem("questionId"));
+        var id = window.localStorage.getItem("questionId");
+        $("#questionId").val(id);
+        var param = {questionId: id};
+        axios.get('http://127.0.0.1:8080/ssmtest/question/findQuestionByIdForStudent',{params:param})
+        .then(function (response) {
+            // var app = new Vue({
+            //     el: '#questionListTable',
+            //     data: {
+            //         dataInfo: response.data.result
+            //     }
+            // })
+            $("#questionContent").val(response.data.result.questionContent);
+            //$('#questionAnswer').val(response.data.result.questionAnswer);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
     }
 
 
-    
+    function submitBtn(){
+            let questionId = document.getElementById("questionId").value;
+            let questionContent = document.getElementById("questionContent").value;
+            let questionAnswer = document.getElementById("questionAnswer").value;
+            if(questionAnswer === "" || questionContent === "" || questionId === ""){
+                alert("输入不能为空");
+                return;
+            }
+            axios.put(`http://127.0.0.1:8080/ssmtest/question/updateQuestion`,
+                {
+                    questionId: questionId,
+                    questionContent: questionContent,
+                    questionAnswer: questionAnswer
+                }
+            )
+                .then(res => {
+                    if (res.data.code === 1) {
+                         alert("更新成功");
+                        // 强制刷新页面
+                        window.location.href = window.location.href;
+                    } else {
+                        alert('更新失败');
+                    }
+                })
+                .catch(res => {
+                })
+    }
 </script>
 </html>
