@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--<link rel="stylesheet" href="css/bootstrap.css" th:href="@{/css/bootstrap.min.css}">-->
+
+
+    <!--<script src="js/jquery-3.3.1.min.js" th:src="@{/js/jquery-3.3.1.min.js}"></script>-->
+    <!--<script src="js/bootstrap.js" th:src="@{/js/bootstrap.min.js}"></script>-->
+
+
+    <!--<script src="js/bootstrapValidator.min.js" th:src="@{/js/bootstrapValidator.min.js}"></script>-->
+
+    <title>用户管理</title>
+    <style>
+        .bgColor{
+            background-color:rgba(243,66,111,0.15)
+        }
+        .divBorder{
+            border: solid 1px rgba(12,24,255,0.15);
+            padding-top: 15px;
+            padding-bottom: 15px;
+            margin-top: 5px;
+            border-radius: 5px;
+        }
+        .divBorder2{
+            border: solid 1px rgba(12,24,255,0.15);
+            padding-top: 5px;
+            padding-bottom: 5px;
+            margin-top: 3px;
+            border-radius: 5px;
+        }
+        .h4font{
+            margin-top: 0px;
+            font-family: 微软雅黑;
+            font-weight: 600;
+        }
+        .left20{
+            margin-left: 15px;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="divBorder">
+        <form class="form-inline">
+            <div class="form-group">
+                <label class="left20">用户名</label>
+                <input type="text" class="form-control" name="userName" placeholder="用户名" th:value="${}">
+
+                <label class="left20">姓名</label>
+                <input type="text" class="form-control" name="name" placeholder="姓名" th:value="${}">
+
+                <input type="submit" style="margin-left: 20px" class="btn btn-default btn-primary" value="查 询" >
+
+
+            </div>
+        </form>
+    </div>
+
+    <div class="divBorder2">
+        <div class="form-inline">
+            <div class="input-group">
+                <a href="#" class="btn   left20" role="button" data-toggle="modal" data-target="#insertModal">
+                    <span class=" glyphicon glyphicon-plus" aria-hidden="true" style="margin-right: 5px"></span>添 加</a>
+                <!-- <a href="#" class="btn   left20" role="button">
+                    <span class=" glyphicon glyphicon-edit" aria-hidden="true" style="margin-right: 5px"></span>修 改</a> -->
+                <a href="#" class="btn   left20" role="button" data-toggle="modal" data-target="#deleteModal">
+                    <span class="glyphicon glyphicon-minus" aria-hidden="true" style="margin-right: 5px"></span>删 除</a>
+                <a href="#" class="btn   left20" role="button" onclick="refreshData()">
+                    <span class=" glyphicon glyphicon-new-window" aria-hidden="true" style="margin-right: 5px"></span>刷新</a>
+            </div>
+        </div>
+        <div id= "app">
+            <table class="table table-hover table-striped table-bordered text-center" id = "mytable">
+                <thead>
+                <tr class="info">
+                    <th>学号</th>
+                    <th>姓名</th>
+                    <!-- <th>更新</th>
+                    <th>删除</th> -->
+                </tr>
+                </thead>
+                <tbody id = "mytablebody">
+                    <tr v-for = "item in dataInfo">
+                        <td>{{item.studentId}}</td>
+                        <td>{{item.studentName}}</td>
+                        <!-- <td>
+                            <button class="btn btn-success" data-target="#updateModal" data-toggle="modal" id="updateBtn">更新</button>
+                        </td>
+                        <td>
+                            <button class="btn btn-success" data-target="#deleteModal" data-toggle="modal">删除</button>
+                        </td> -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--新增学生信息模态框-->
+    <div class="modal fade" id="insertModal" tabindex="-1" role="dialog" aria-labelledby="myInsertModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myInsertModalLabel" style="text-align: center">新增学生信息</h4>
+                </div>
+                <div class="modal-body">
+                    <br>
+                    <div style="margin-left:120px">
+                        <label for="insertStudentId" class="col-sm-2 control-label">学号</label>
+                        <input type="text" class="form-control" id="insertStudentId" placeholder="请输入学号" style="width: 200px">
+                        <br>
+                        <label for="insertName" class="col-sm-2 control-label">名字</label>
+                        <input type="text" class="form-control" id="insertName" placeholder="请输入名字" style="width: 200px">
+                        <br>
+                        <label for="insertPassword" class="col-sm-2 control-label">密码</label>
+                        <input type="text" class="form-control" id="insertPassword" placeholder="请输入密码,默认123456" style="width: 200px">
+                        <br>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="text-align:center">取消</button>
+                    <button type="button" class="btn btn-success" style="text-align: center" onclick="insert()"
+                            data-dismiss="modal">新增
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--更新一整条数据-->
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="myUpdateModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myUpdateModalLabel" style="text-align: center">更新学生信息</h4>
+                </div>
+                <div class="modal-body">
+                    <br>
+                    <div style="margin-left:120px">
+                        <label for="updateName" class="col-sm-2 control-label">名字</label>
+                        <input type="text" class="form-control" id="updateName" placeholder="请输入名字" style="width: 200px">
+                        <br>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="text-align:center">取消</button>
+                    <button type="button" class="btn btn-success" style="text-align: center" onclick="updateInfo()"
+                            data-dismiss="modal">更新
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--删除model-->
+    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="myDeleteModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myDeleteModalLabel" style="text-align: center">删除学生信息</h4>
+                </div>
+                <div class="modal-body" style="text-align: center">
+                    <br>
+                    <div style="margin-left:120px">
+                        <label for="insertStudentId" class="col-sm-2 control-label">学号:</label>
+                        <input type="text" class="form-control" id="deleteStudentId" placeholder="请输入学生学号" style="width: 160px">
+                    </div>
+                    <br>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="text-align:center">取消</button>
+                    <button type="button" class="btn btn-success" style="text-align: center" onclick="deleteInfo()"
+                            data-dismiss="modal">删除
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- <script src="../js/studentManage.js"></script> -->
+<!-- <script src="../js/login.js"></script>
+<script src="../js/axios.min.js"></script>
+<script src="../js/vue.js"></script> -->
+<!-- <script src="../bootstrap/js/jquery-3.3.1.min.js"></script> -->
+
+<!-- <script>
+    $(function () {
+        var $thr = $('table thead tr th');
+        var $tbr = $('table tbody tr');
+
+        $thr.addClass('text-center');
+        var $checkAll = $thr.find('input');
+        $checkAll.click(function (event) {
+            $tbr.find('input').prop('checked',$(this).prop('checked'));
+
+            /*并调整所有选中行的CSS样式*/
+            if ($(this).prop('checked')) {
+                $tbr.find('input').parent().parent().addClass('warning');
+            } else{
+                $tbr.find('input').parent().parent().removeClass('warning');
+            }
+
+            /*阻止向上冒泡，以防再次触发点击操作*/
+            event.stopPropagation();
+        });
+
+        $('#firstCell').click(function () {
+            $(this).find('input').click();
+        })
+
+        $tbr.find('input').click(function(event){
+            /*调整选中行的CSS样式*/
+            $(this).parent().parent().toggleClass('warning');
+            /*如果已经被选中行的行数等于表格的数据行数，将全选框设为选中状态，否则设为未选中状态*/
+            $checkAll.prop('checked',$tbr.find('input:checked').length == $tbr.length ? true : false);
+            /*阻止向上冒泡，以防再次触发点击操作*/
+            event.stopPropagation();
+        });
+        /*点击每一行时也触发该行的选中操作*/
+        $tbr.click(function(){
+            $(this).find('input').click();
+        });
+
+    })
+</script> -->
+<script>
+    $(document).ready(function (){
+        axios.get('http://127.0.0.1:8080/ssmtest/student/findStudentList')
+        .then(function (response) {
+            var app = new Vue({
+                el: '#app',
+                data: {
+                    dataInfo: response.data.result
+                }
+            })
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+
+        
+    });
+
+    function refreshData(){
+        axios.get('http://127.0.0.1:8080/ssmtest/student/findStudentList')
+        .then(function (response) {
+            var result = response.data.result;
+            //console.log(result);
+            $("#mytablebody").empty();
+            for (var i = 0;i<result.length;i++) {
+                var j = result[i];
+                //console.log(j);
+                $("#mytablebody").append('<tr><td>'+j["studentId"]+'</td><td>'+j["studentName"]+'</td></tr>');
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
+    var curSid;
+    $("updateBtn").click(function(){
+        var td0 = $(this).parent("tr").find("td").eq(0).text();
+        alert("   ");
+    });
+
+    function insert(){
+        let studentId = document.getElementById("insertStudentId").value;
+        let name = document.getElementById("insertName").value;
+        let password = document.getElementById("insertPassword").value;
+        if(password === ""){
+            password = "123456";
+        }
+        axios.post(`http://127.0.0.1:8080/ssmtest/student/insertStudent`,
+            {
+                studentId: studentId,
+                studentName: name,
+                password: password
+            }
+        )
+            .then(res => {
+                if (res.data.code === 1) {
+                    alert("添加成功");
+                    // 强制刷新页面
+                    refreshData();
+                } else {
+                    alert('添加失败');
+                }
+            })
+            .catch(res => {
+            })
+    }
+
+    function updateInfo() {
+        let studentId = document.getElementById("updateStudentId").value;
+        let name = document.getElementById("updateName").value;
+        let sex = document.getElementById("updateSex").value;
+        let major = document.getElementById("updateMajor").value;
+        axios.put(`http://127.0.0.1:8080/ssmtest/student/updateStudent`,
+            {
+                studentId: studentId,
+                name: name,
+                sex: sex,
+                major: major
+            }
+        )
+            .then(res => {
+                if (res.data.code === 1) {
+                    alert("更新成功");
+                    // 强制刷新页面
+                    window.location.href = window.location.href;
+                } else {
+                    alert('更新失败');
+                }
+            })
+            .catch(res => {
+            })
+    }
+    
+
+    // 删除数据
+    function deleteInfo() {
+        let studentId = document.getElementById("deleteStudentId").value;
+        var param = {studentId: studentId};
+        let name = "";
+        let password = "";
+        axios.post('http://127.0.0.1:8080/ssmtest/student/deleteStudent', 
+            {
+                studentId : studentId,
+                studentName : name,
+                password : password
+            })
+            .then(res => {
+                if (res.data.code === 1) {
+                    alert("删除成功");
+                    // 强制刷新页面
+                    refreshData();
+                } else {
+                    alert('删除失败');
+                }
+            })
+            .catch(res => {
+            })
+    }
+</script>
+</body>
+</html>

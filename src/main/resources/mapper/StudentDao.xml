@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 设置为IUserDao接口方法提供sql语句配置 -->
+<mapper namespace="com.zh.dao.IStudentDao">
+
+    <select id="findStudent" resultType="Student">
+        SELECT * FROM student WHERE student_id = #{id}
+    </select>
+
+    <select id="findAllStudentByList" resultType="Student">
+        select * from student
+    </select>
+
+    <insert id="insertStudent" parameterType="Student">
+        insert into student(student_id,student_name,password) values (#{studentId},#{studentName},#{password})
+    </insert>
+
+    <update id="updateStudent" parameterType="Student">
+        update student set student_name = #{studentName} where student_id = #{studentId}
+    </update>
+
+    <delete id="deleteStudent" parameterType="Student">
+        delete from student where student_id = #{studentId}
+    </delete>
+
+    <update id="updateStudentPassword" parameterType="Student">
+        update student
+        set password = #{password}
+        where student_id = #{studentId}
+    </update>
+</mapper>

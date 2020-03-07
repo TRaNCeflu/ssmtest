@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>SQLTestingSystem</title>
+    <link href="static/bootstrap/css/bootstrap.min.css" type="text/css" rel="stylesheet">
+    <link href="static/css/login.css" rel="stylesheet" type="text/css"/>
+    <style>
+        body {
+            background-color: #2D2D2D
+        }
+        /*
+        改变按钮对齐问题
+        */
+        .changeButton {
+            position: relative;
+            left: 140px;
+            bottom: 42px;
+        }
+    </style>
+</head>
+<body onload="background()">
+<div id="mydiv" style="height:1000px;">
+    <div style="width: 300px; margin: 0 auto;">
+        <br>
+        <br>
+    </div>
+    <div class='login' style="width: 320px;height: 420px;background-color: #2D2D2D">
+        <div class='login_title' style="text-align: center">
+            <span style="font-size: 20px">登录</span>
+        </div>
+        <div class='login_fields'>
+            <div class='login_fields__user'>
+                <input id="name" placeholder='用户名' maxlength="16" type='text' autocomplete="on"/>
+            </div>
+            <div class='login_fields__password'>
+                <input id="password" placeholder='密码' maxlength="16" type='password' autocomplete="off">
+            </div>
+            <br>
+            <br>
+            <div class='login_fields__submit' style="text-align: center">
+                <div >
+                    <input type='button' value='学生' onclick="loginStudent()">
+                </div>
+                <div class="changeButton">
+                    <input type='button' value='老师' onclick="loginTeacher()">
+                </div>
+            </div>
+        </div>
+        <div class='success'>
+        </div>
+        <div class='disclaimer'>
+            <p style="text-align: center">Welcome</p>
+        </div>
+    </div>
+</div>
+<script src="static/js/login.js"></script>
+<script src="static/js/axios.min.js"></script>
+<!--<script src="static/js/register.js"></script>-->
+<script type="text/javascript" src="static/js/canvas-particle.js"></script>
+<script type="text/javascript">
+    function background() {
+        //配置
+        var config = {
+            vx: 4,	//小球x轴速度,正为右，负为左
+            vy: 4,	//小球y轴速度
+            height: 2,	//小球高宽，其实为正方形，所以不宜太大
+            width: 2,
+            count: 200,		//点个数
+            color: "121, 162, 185", 	//点颜色
+            stroke: "130,255,255", 		//线条颜色
+            dist: 6000, 	//点吸附距离
+            e_dist: 20000, 	//鼠标吸附加速距离
+            max_conn: 10 	//点到点最大连接数
+        };
+        //调用
+        CanvasParticle(config);
+    }
+</script>
+</body>
+</html>

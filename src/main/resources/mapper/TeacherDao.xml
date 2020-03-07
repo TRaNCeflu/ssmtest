@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 设置为IUserDao接口方法提供sql语句配置 -->
+<mapper namespace="com.zh.dao.ITeacherDao">
+<!--    List<Teacher> findAllTeacherList();-->
+<!--    Teacher findTeacher(String id);-->
+<!--    boolean updateTeacherPassword(Teacher teacher);-->
+<!--    boolean insertTeacher(Teacher teacher);-->
+<!--    boolean deleteTeacher(Teacher teacher);-->
+    <select id="findTeacher" resultType="Teacher">
+        SELECT * FROM teacher WHERE teacher_id = #{id}
+    </select>
+
+    <select id="findAllTeacherList" resultType="Teacher">
+        select * from teacher
+    </select>
+
+    <update id="updateTeacherPassword" parameterType="Teacher" >
+        update teacher
+        set password = #{password}
+        where teacher_id = #{teacherId}
+    </update>
+
+    <insert id="insertTeacher" parameterType="Teacher">
+        insert into teacher(teacher_id,name,password) values (#{teacherId},#{name},#{password})
+    </insert>
+
+    <delete id="deleteTeacher" >
+        delete from teacher where teacher_id = #{id}
+    </delete>
+
+</mapper>

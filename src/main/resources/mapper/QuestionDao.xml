@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 设置为IUserDao接口方法提供sql语句配置 -->
+<mapper namespace="com.zh.dao.IQuestionDao">
+<!--    List<Question> findAllQuestionList();-->
+<!--    Question findQuestionById(Integer id);-->
+<!--    boolean insertQuestion(Question question);-->
+<!--    boolean deleteQuestion(Integer id);-->
+<!--    boolean updateQuestion(Question question);-->
+    <select id="findAllQuestionList" resultType="Question">
+        SELECT * FROM question
+    </select>
+
+    <select id="findQuestionById" resultType="Question">
+        select * from question where question_id = #{id}
+    </select>
+
+    <insert id="insertQuestion" parameterType="Question">
+        insert into question(question_type,question_content,question_answer)
+        values (#{questionType},#{questionContent},#{questionAnswer})
+    </insert>
+
+    <delete id="deleteQuestion" parameterType="Question">
+        delete from question where question_id = #{id}
+    </delete>
+
+    <update id="updateQuestion" parameterType="Question">
+        update question
+        set question_content = #{questionContent},question_type = #{questionType},question_answer = #{questionAnswer}
+        where question_id = #{questionId}
+    </update>
+</mapper>
