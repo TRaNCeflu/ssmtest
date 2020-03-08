@@ -2,7 +2,10 @@ package com.zh.controller;
 
 import com.zh.common.bean.VResponse;
 import com.zh.domain.Question;
+import com.zh.domain.QuestionForStudent;
+import com.zh.domain.Score;
 import com.zh.service.IQuestionService;
+import com.zh.service.ISubmitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +18,25 @@ public class QuestionController {
     @Autowired
     private IQuestionService questionService;
 
+    @Autowired
+    private ISubmitService submitService;
     @GetMapping("/findAllQuestionForStudent")
-    public VResponse<List<Question>> findAllQuestionForStudent(){
-        List<Question> questionList = questionService.findAllQuestionForStudent();
+    public VResponse<List<QuestionForStudent>> findAllQuestionForStudent(@RequestParam("studentId") String studentId){
+        List<QuestionForStudent> questionList = questionService.findAllQuestionForStudent();
+        for(int i = 0; i<questionList.size();i++){
+            Score score = submitService.findScoreByTwoId(questionList.get(i).getQuestionId(),studentId);
+            if(score != null){
+                if(score.getSubmitType() == 1){
+                    questionList.get(i).setSubmitType("已提交");
+                }else if(score.getSubmitType() == 2){
+                    questionList.get(i).setSubmitType("未通过");
+                }else{
+                    questionList.get(i).setSubmitType("已通过");
+                }
+            }
+            else
+                questionList.get(i).setSubmitType("未提交");
+        }
         return VResponse.success(questionList);
     }
 

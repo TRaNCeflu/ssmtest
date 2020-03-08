@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 设置为IUserDao接口方法提供sql语句配置 -->
+<mapper namespace="com.zh.dao.IScoreDao">
+<!--    Score findScoreByTwoId(Integer questionId,Integer StudentId);-->
+<!--    boolean insertScoreByStudent(Score score);-->
+<!--    boolean updateScoreByStudent(Score score);-->
+<!--    boolean deleteScoreBeforeDeleteStudent(Integer studentId);-->
+<!--    Score findScoreByTwoIdForStudent(Integer questionId,String StudentId);-->
+
+    <select id="findScoreByTwoId" resultType="Score">
+        select * from score where question_id = #{0} and student_id = #{1}
+    </select>
+
+    <insert id="insertScoreByStudent" parameterType="Score">
+        insert into score(question_id,student_id,question_answer,student_answer,submit_type,submit_time,question_type)
+        values (#{questionId},#{studentId},#{questionAnswer},#{studentAnswer},#{submitType},#{submitTime},#{questionType})
+    </insert>
+
+
+</mapper>

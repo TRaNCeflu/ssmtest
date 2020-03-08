@@ -68,7 +68,7 @@
                 <div class="form-group">
                     <label class="col-sm-1 control-label">题目内容</label>
                     <div class="col-sm-8">
-                        <textarea type="text" class="form-control" id="questionContent" rows="12" placeholder="题目描述"></textarea>
+                        <textarea type="text" class="form-control" id="questionContent" rows="12" placeholder="题目描述" readonly = "readonly"></textarea>
                     </div>
                     
                 </div>
@@ -146,6 +146,7 @@
         }
     }
 
+    var isSubmitExist = false;
     function initial(){
         //alert(window.localStorage.getItem("questionId"));
         var id = window.localStorage.getItem("questionId");
@@ -165,35 +166,58 @@
         .catch(function (error) {
             console.log(error);
         });
+
+        var studentId = window.sessionStorage.getItem("id");
+        var param2 = {questionId:id,studentId:studentId};
+        axios.get('http://127.0.0.1:8080/ssmtest/submit/findScoreByTwoId',{params:param2})
+        .then(function (response) {
+            if(response.data.code === 1){
+                $("#questionAnswer").val(response.data.result.studentAnswer);
+                isSubmitExist = true;
+            }
+            else{
+                isSubmitExist = false;
+            }
+
+            //$('#questionAnswer').val(response.data.result.questionAnswer);
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
     }
 
 
     function submitBtn(){
             let questionId = document.getElementById("questionId").value;
-            let questionContent = document.getElementById("questionContent").value;
-            let questionAnswer = document.getElementById("questionAnswer").value;
-            if(questionAnswer === "" || questionContent === "" || questionId === ""){
+            //let questionContent = document.getElementById("questionContent").value;
+            let studentAnswer = document.getElementById("questionAnswer").value;
+            let studentId = window.sessionStorage.getItem("id");
+            if(studentAnswer === ""){
                 alert("输入不能为空");
                 return;
             }
-            axios.put(`http://127.0.0.1:8080/ssmtest/question/updateQuestion`,
+            if(!isSubmitExist){
+            axios.post(`http://127.0.0.1:8080/ssmtest/submit/insertScoreByStudent`,
                 {
                     questionId: questionId,
-                    questionContent: questionContent,
-                    questionAnswer: questionAnswer
+                    studentId : studentId,
+                    studentAnswer: studentAnswer
                 }
             )
                 .then(res => {
                     if (res.data.code === 1) {
-                         alert("更新成功");
-                        // 强制刷新页面
-                        window.location.href = window.location.href;
+                        alert("更新成功");
+                        isSubmitExist = true; 
                     } else {
                         alert('更新失败');
                     }
                 })
                 .catch(res => {
-                })
+                });
+            }
+            else{
+                alert('存在提交');
+            }
     }
 </script>
 </html>

@@ -2,6 +2,7 @@ package com.zh.service.impl;
 
 import com.zh.dao.IQuestionDao;
 import com.zh.domain.Question;
+import com.zh.domain.QuestionForStudent;
 import com.zh.service.IQuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class QuestionServiceImpl implements IQuestionService {
     }
 
     @Override
-    public List<Question> findAllQuestionForStudent() {
+    public List<QuestionForStudent> findAllQuestionForStudent() {
         return questionDao.findAllQuestionForStudent();
     }
 

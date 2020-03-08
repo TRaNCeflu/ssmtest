@@ -14,7 +14,7 @@
         SELECT * FROM question
     </select>
 
-    <select id="findAllQuestionForStudent" resultType="Question">
+    <select id="findAllQuestionForStudent" resultType="QuestionForStudent">
         select question_id,question_type,question_content from question
     </select>
 
