@@ -149,6 +149,7 @@
     function initial(){
         //alert(window.localStorage.getItem("questionId"));
         var id = window.localStorage.getItem("questionId");
+        document.title = id;
         $("#questionId").val(id);
         var param = {questionId: id};
         axios.get('http://127.0.0.1:8080/ssmtest/question/findQuestionById',{params:param})

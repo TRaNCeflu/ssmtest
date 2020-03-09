@@ -30,7 +30,11 @@ public class QuestionController {
                     questionList.get(i).setSubmitType("已提交");
                 }else if(score.getSubmitType() == 2){
                     questionList.get(i).setSubmitType("未通过");
-                }else{
+                }
+                else if(score.getSubmitType() == 0){
+                    questionList.get(i).setSubmitType("未提交");
+                }
+                else{
                     questionList.get(i).setSubmitType("已通过");
                 }
             }
@@ -104,7 +108,15 @@ public class QuestionController {
 
     @PutMapping("/updateQuestion")
     public VResponse<Object> updateQuestion(@RequestBody Question question){
+        //检查题目是查还是增删改
         Question que = checkQuestionType(question);
+
+        //如果老师更新题目时答案变化，则将对应的question_answer在score表中更新
+        Question question1 = questionService.findQuestionById(que.getQuestionId());
+        if(!question1.getQuestionAnswer().equals(que.getQuestionAnswer())){
+            submitService.updateScoreAfterQuestionUpdate(que);
+        }
+
         boolean isUpdate = questionService.updateQuestion(que);
         if(isUpdate){
             return VResponse.success("更新成功");

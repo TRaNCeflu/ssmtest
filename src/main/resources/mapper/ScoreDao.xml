@@ -8,15 +8,35 @@
 <!--    boolean updateScoreByStudent(Score score);-->
 <!--    boolean deleteScoreBeforeDeleteStudent(Integer studentId);-->
 <!--    Score findScoreByTwoIdForStudent(Integer questionId,String StudentId);-->
+<!--   boolean updateScoreAfterQuestionUpdate(Question question);-->
+<!--    List<Score> findScoreByStudentId(String studentId);-->
 
     <select id="findScoreByTwoId" resultType="Score">
         select * from score where question_id = #{0} and student_id = #{1}
+    </select>
+
+    <select id="findScoreByStudentId" resultType="Score">
+        select * from score where student_id = #{0}
     </select>
 
     <insert id="insertScoreByStudent" parameterType="Score">
         insert into score(question_id,student_id,question_answer,student_answer,submit_type,submit_time,question_type)
         values (#{questionId},#{studentId},#{questionAnswer},#{studentAnswer},#{submitType},#{submitTime},#{questionType})
     </insert>
+
+    <update id="updateScoreByStudent" parameterType="Score">
+        update score
+        set question_answer = #{questionAnswer},student_answer=#{studentAnswer},submit_type = #{submitType},submit_time = #{submitTime},question_type=#{questionType}
+        where question_id = #{questionId} and student_id = #{studentId}
+    </update>
+
+    <update id="updateScoreAfterQuestionUpdate" parameterType="Question">
+        update score
+        set question_answer = #{questionAnswer},question_type = #{questionType},submit_type = 0
+        where question_id = #{questionId}
+    </update>
+
+
 
 
 </mapper>

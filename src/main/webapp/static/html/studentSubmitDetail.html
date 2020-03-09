@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <title>表格</title>
+    <!-- <link rel="stylesheet" href="../css/bootstrap.css"> -->
+    <link rel="stylesheet" href="../css/bootstrap.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../css/font-awesome.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="../css/ionicons.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../css/AdminLTE.css">
+    <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
+          page. However, you can choose any other skin. Make sure you
+          apply the skin class to the body tag so the changes take effect. -->
+    <link rel="stylesheet" href="../css/skins/skin-blue.min.css">
+
+    <link rel="stylesheet" href="../css/bootstrap-table.css">
+    <link rel="stylesheet" href="../css/jquery.treegrid.css">
+    <link rel="stylesheet" href="../css/myCommon.css">
+    <link rel="stylesheet" href="../css/bootstrap-tab.css">
+
+    <!-- jQuery 3 -->
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="../js/bootstrap.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../js/adminlte.js"></script>
+
+    <script src="../js/bootstrap-table.js"></script>
+    <script src="../js/bootstrap-table-zh-CN.js"></script>
+    <script src="../js/bootstrap-table-treegrid.js"></script>
+    <script src="../js/jquery.treegrid.min.js"></script>
+    <script src="../js/bootstrap-tab.js"></script>
+    <script src="../js/login.js"></script>
+    <script src="../js/axios.min.js"></script>
+    <script src="../js/vue.js"></script>
+    <style>
+        p{
+            font-size: 30px;
+            color: brown;
+        }
+    </style>
+</head>
+
+<body>
+<div class="panel-group">
+    <div class="panel panel-primary">
+        <div class="panel panel-body">
+            <div style="text-align: center;">
+                <p>学号为<span id = "studentIdInTitle"></span>同学的答题情况</p>
+            </div>
+        </div>
+        <table class="table table-bordered table-hover" id ="questionListTable" 
+               >
+            <thead>
+            <tr class="success">
+                <th>题目编号</th>
+                <th>题目类型</th>
+                <th>提交答案</th>
+                <th>提交时间</th>
+                <th>提交状态</th>
+            </tr>
+            </thead>
+            <tbody id = "myTableBody">
+                <tr v-for = "item in dataInfo">
+                    <td>{{item.questionId}}</td>
+                    <td>{{item.questionType}}</td>
+                    <td>{{item.studentAnswer}}</td>
+                    <td>{{item.submitTime}}</td>
+                    <td>{{item.submitType}}</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- <div class="panel-footer">
+            <nav>
+                <ul class="pagination pagination-sm">
+                    <li class="disabled">
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">«</span>
+                        </a>
+                    </li>
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">»</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>  -->
+    </div><!-- end of panel -->
+</div>
+</body>
+<!-- <script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../js/bootstrap.js"></script>
+<script src="../js/axios.min.js"></script>
+<script src="../js/vue.js"></script> -->
+<script>
+    $(document).ready(function (){
+        let studentId = window.localStorage.getItem("openstudentId");
+        document.title = studentId;
+        document.getElementById("studentIdInTitle").innerText = studentId;
+        let param = {studentId:studentId};
+        axios.get('http://127.0.0.1:8080/ssmtest/submit/findScoreDetailForStudentId',{params:param})
+        .then(function (response) {
+            var app = new Vue({
+                el: '#myTableBody',
+                data: {
+                    dataInfo: response.data.result
+                }
+            })
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    });
+
+    
+</script>
+
+</html>

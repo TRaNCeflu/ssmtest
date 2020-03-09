@@ -80,7 +80,7 @@
             <table class="table table-hover table-striped table-bordered text-center" id = "mytable">
                 <thead>
                 <tr class="info">
-                    <th>学号</th>
+                    <th>学号(点击查看答题情况)</th>
                     <th>姓名</th>
                     <!-- <th>更新</th>
                     <th>删除</th> -->
@@ -88,7 +88,7 @@
                 </thead>
                 <tbody id = "mytablebody">
                     <tr v-for = "item in dataInfo">
-                        <td>{{item.studentId}}</td>
+                        <td><a href="#" onclick="openStudentSubmitDetail(this.innerText); return false;">{{item.studentId}}</a></td>
                         <td>{{item.studentName}}</td>
                         <!-- <td>
                             <button class="btn btn-success" data-target="#updateModal" data-toggle="modal" id="updateBtn">更新</button>
@@ -253,6 +253,12 @@
 
         
     });
+
+    function openStudentSubmitDetail(text){
+        //alert(text);
+        window.localStorage.setItem("openstudentId",text);
+        window.open('studentSubmitDetail.html');
+    }
 
     function refreshData(){
         axios.get('http://127.0.0.1:8080/ssmtest/student/findStudentList')
