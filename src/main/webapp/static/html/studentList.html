@@ -57,7 +57,8 @@
                 <input type="text" class="form-control" name="name" placeholder="姓名" th:value="${}">
 
                 <input type="submit" style="margin-left: 20px" class="btn btn-default btn-primary" value="查 询" >
-
+                <input type="file" accept=".xls,.xlsx" id="file" value=""><a href="#" class="btn   left20" role="button" onclick="uploadFile()">
+                    <span class="" aria-hidden="true" style="margin-right: 5px">批量导入</span></a>
 
             </div>
         </form>
@@ -74,6 +75,7 @@
                     <span class="glyphicon glyphicon-minus" aria-hidden="true" style="margin-right: 5px"></span>删 除</a>
                 <a href="#" class="btn   left20" role="button" onclick="refreshData()">
                     <span class=" glyphicon glyphicon-new-window" aria-hidden="true" style="margin-right: 5px"></span>刷新</a>
+                
             </div>
         </div>
         <div id= "app">
@@ -269,7 +271,7 @@
             for (var i = 0;i<result.length;i++) {
                 var j = result[i];
                 //console.log(j);
-                $("#mytablebody").append('<tr><td>'+j["studentId"]+'</td><td>'+j["studentName"]+'</td></tr>');
+                $("#mytablebody").append('<tr><td><a href="#" onclick="openStudentSubmitDetail(this.innerText); return false;">'+j["studentId"]+'</a></td><td>'+j["studentName"]+'</td></tr>');
             }
         })
         .catch(function (error) {
@@ -360,6 +362,29 @@
             })
             .catch(res => {
             })
+    }
+
+    function uploadFile(){
+        let file = document.getElementById("file").files[0];
+        let formData = new FormData();
+        formData.append("file",file,file.name);
+        
+        axios({
+                    method: "POST",
+                    url: "http://127.0.0.1:8080/ssmtest/file/upload",
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded' //注意这里
+                    },
+                    data: formData
+                }).then((res) => {
+                    if(res.data.code === 1){
+                        alert('上传成功');
+                    }else{
+                        alert("上传失败");
+                    }
+                }).catch((err) => {
+                    console.log(err)
+                });
     }
 </script>
 </body>

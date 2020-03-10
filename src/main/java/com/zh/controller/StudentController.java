@@ -1,12 +1,15 @@
 package com.zh.controller;
 
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import com.zh.common.bean.VResponse;
 import com.zh.domain.Student;
 import com.zh.service.IStudentService;
 import com.zh.service.impl.StudentServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @CrossOrigin
@@ -31,7 +34,6 @@ public class StudentController {
         }else{
             return VResponse.error(2,"添加失败");
         }
-        //return VResponse.success("添加成功");
     }
 
     @PostMapping("/deleteStudent")

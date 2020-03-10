@@ -1,8 +1,11 @@
 package com.zh.service.impl;
 
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import com.zh.dao.IStudentDao;
 import com.zh.domain.Student;
 import com.zh.service.IStudentService;
+import org.apache.ibatis.session.SqlSessionException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -22,7 +25,12 @@ public class StudentServiceImpl implements IStudentService{
     }
 
     public boolean insertStudent(Student student){
-        return studentDao.insertStudent(student);
+        try{
+            studentDao.insertStudent(student);
+        }catch (Exception e){
+            return false;
+        }
+        return true;
     }
 
     public boolean updateStudent(Student student){
