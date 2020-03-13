@@ -190,7 +190,7 @@
                         // 强制刷新页面
                         window.location.href = window.location.href;
                     } else {
-                        alert('更新失败');
+                        alert(res.data.msg);
                     }
                 })
                 .catch(res => {

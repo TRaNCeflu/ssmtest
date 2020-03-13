@@ -46,6 +46,9 @@ public class SubmitController {
                 else if(score.getSubmitType() == 0){
                     questionList.get(i).setSubmitType("未提交");
                 }
+                else if(score.getSubmitType() == 4){
+                    questionList.get(i).setSubmitType("题目更新后未提交");
+                }
                 else{
                     questionList.get(i).setSubmitType("已通过");
                 }

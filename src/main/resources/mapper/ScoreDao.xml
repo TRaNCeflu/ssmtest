@@ -32,7 +32,7 @@
 
     <update id="updateScoreAfterQuestionUpdate" parameterType="Question">
         update score
-        set question_answer = #{questionAnswer},question_type = #{questionType},submit_type = 0
+        set question_answer = #{questionAnswer},question_type = #{questionType},submit_type = 4
         where question_id = #{questionId}
     </update>
 
