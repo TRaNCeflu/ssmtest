@@ -3,25 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <title>test</title>
+    <link rel="stylesheet" href="../css/loading.css">
+    <script src="../js/vue.js"></script>
+    <link rel="stylesheet" href="../css/bootstrap.css">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="../css/font-awesome.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="../css/ionicons.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../css/AdminLTE.css">
+    <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
+          page. However, you can choose any other skin. Make sure you
+          apply the skin class to the body tag so the changes take effect. -->
+    <link rel="stylesheet" href="../css/skins/skin-blue.min.css">
+
+    <link rel="stylesheet" href="../css/bootstrap-table.css">
+    <link rel="stylesheet" href="../css/jquery.treegrid.css">
+    <link rel="stylesheet" href="../css/myCommon.css">
+    <link rel="stylesheet" href="../css/bootstrap-tab.css">
+
+    <!-- jQuery 3 -->
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
+    <script src="../js/bootstrap.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../js/adminlte.js"></script>
+
+    <script src="../js/bootstrap-table.js"></script>
+    <script src="../js/bootstrap-table-zh-CN.js"></script>
+    <script src="../js/bootstrap-table-treegrid.js"></script>
+    <script src="../js/jquery.treegrid.min.js"></script>
+    <script src="../js/bootstrap-tab.js"></script>
+    <script src="../js/login.js"></script>
+    <script src="../js/axios.min.js"></script>
 </head>
 <script>
-    function selectUser() {
-        var xmlhttp = new XMLHttpRequest();
-        xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                document.getElementById("test").innerHTML = xmlhttp.responseText;
-            }
-        }
-        xmlhttp.open("POST", "user/showUser.do", true);
-        xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        xmlhttp.send("id=1");
-    }
-    function displayIDandName() {
-        document.getElementById("test").innerHTML = window.sessionStorage.getItem("id")+window.sessionStorage.getItem("name");
+    
+</script>
+<body onload="e()">
+    <div class="spinner" id = 'loading' >
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+   </div>
+</body>
+<script>
+    function e(){
+        $('#loading').hide();
     }
 </script>
-<body>
-<p id="test">Hello World!</p>
-<button type="button" onclick="displayIDandName()">onclick test</button>
-</body>
 </html>

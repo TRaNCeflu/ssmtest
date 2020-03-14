@@ -9,6 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../css/bootstrap.css">
     <link rel="stylesheet" href="../css/bootstrapValidator.min.css">
+    <link rel="stylesheet" href="../css/loading.css">
 
 
 
@@ -47,6 +48,11 @@
 
 </head>
 <body onload = "checkLogin(); initial();">
+    <div class="spinner" id = 'loading' style ="position: absolute; text-align: center; z-index: 99; width: 100%; height: 100%; align-items: center;" >
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+   </div>
 <div class="container-fluid panel-body" style="padding-bottom:0px">
     <form class="form-horizontal" id="formAdd" action="#" th:action="@{/customer/add}" method="post">
 
@@ -148,6 +154,7 @@
 
     var isSubmitExist = false;
     function initial(){
+        endLoading();
         //alert(window.localStorage.getItem("questionId"));
         var id = window.localStorage.getItem("questionId");
         //更改title内容
@@ -200,6 +207,7 @@
                 alert("输入不能为空");
                 return;
             }
+            startLoading();
             if (!isSubmitExist) {
                 axios.post(`http://127.0.0.1:8080/ssmtest/submit/insertScoreByStudent`,
                     {
@@ -209,14 +217,17 @@
                     }
                     )
                     .then(res => {
+                        endLoading();
                         if (res.data.code === 1) {
-                            alert("提交成功");
-                            isSubmitExist = true;
+                            alert(res.data.msg);
+                            window.location.href = window.location.href;
                         } else {
-                            alert('提交失败');
+                            alert(res.data.msg);
+                            window.location.href = window.location.href;
                         }
                     })
                     .catch(res => {
+                        endLoading();
                     });
             }
             else {
@@ -228,17 +239,28 @@
                 }
                 )
                 .then(res => {
+                    endLoading();
                     if (res.data.code === 1) {
-                         alert("更新成功");
+                         alert(res.data.msg);
                         // 强制刷新页面
                         window.location.href = window.location.href;
                     } else {
-                        alert('更新失败');
+                        alert(res.data.msg);
+                        window.location.href = window.location.href;
                     }
                 })
                 .catch(res => {
+                    endLoading();
                 })
             }
+    }
+
+    function startLoading(){
+            document.getElementById("loading").style.visibility = "visible";
+        }
+
+    function endLoading(){
+        document.getElementById("loading").style.visibility = "hidden";
     }
 </script>
 </html>

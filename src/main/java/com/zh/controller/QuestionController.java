@@ -78,6 +78,7 @@ public class QuestionController {
 
         String tmpAns = newQue.getQuestionAnswer();
         tmpAns = tmpAns.trim();
+        tmpAns = tmpAns.toLowerCase();
         if(tmpAns.charAt(0) == 's'){
             newQue.setQuestionType(1);
         }

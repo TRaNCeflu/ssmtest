@@ -9,13 +9,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../css/bootstrap.css">
     <link rel="stylesheet" href="../css/bootstrapValidator.min.css">
+    <link rel="stylesheet" href="../css/loading.css">
+    <link rel="stylesheet" href="../css/fakeLoader.min.css">
 
-
-
+    <!-- jQuery 3 -->
     <script src="../js/jquery-3.3.1.min.js"></script>
+    <!-- Bootstrap 3.3.7 -->
     <script src="../js/bootstrap.js"></script>
+    <!-- AdminLTE App -->
     <script src="../js/bootstrapValidator.min.js"></script>
     <script src="../js/axios.min.js"></script>
+    <script src="../js/fakeLoader.min.js"></script>
+    
 
 
     <title>添加题目</title>
@@ -46,10 +51,15 @@
 
 
 </head>
-<body onload = "checkLogin(); initial();">
+<body onload = "checkLogin();">
+    
+    <div class="spinner" id = 'loading' style ="position: absolute; text-align: center; z-index: 99; width: 100%; height: 100%; align-items: center;" >
+        <div class="bounce1"></div>
+        <div class="bounce2"></div>
+        <div class="bounce3"></div>
+   </div>
 <div class="container-fluid panel-body" style="padding-bottom:0px">
     <form class="form-horizontal" id="formAdd" action="#" th:action="@{/customer/add}" method="post">
-
         <div class="panel panel-default" style="margin-bottom: 0px">
             <h4 class="panel panel-heading h4font">
                 添加题目
@@ -133,6 +143,7 @@
     //检测是否有用户登录
     var isLogin = false;
     function checkLogin(){
+        endLoading();
         var id = window.sessionStorage.getItem("id");
         if(id == null){
             isLogin = false;
@@ -142,40 +153,67 @@
         }
         else {
             isLogin = true;
-            return;
         }
     }
 
-    function insertBtn(){
-        let questionContent = document.getElementById("questionContent").value;
-        let questionAnswer = document.getElementById("questionAnswer").value;
-        let questionId = "";
-        let questionType = "";
-        if(questionContent === "" || questionAnswer === ""){
-            alert("输入不能为空");
-            return;
-        }
-        axios.post(`http://127.0.0.1:8080/ssmtest/question/insertQuestion`,
-            {
-                questionId: questionId,
-                questionContent: questionContent,
-                questionAnswer: questionAnswer,
-                questionType : questionType
+    function insertBtn() {
+            let questionContent = document.getElementById("questionContent").value;
+            let questionAnswer = document.getElementById("questionAnswer").value;
+            let questionId = "";
+            let questionType = "";
+            if (questionContent === "" || questionAnswer === "") {
+                alert("输入不能为空");
+                return;
             }
-        )
-            .then(res => {
-                if (res.data.code === 1) {
-                    alert("添加成功");
-                } else if(res.data.code === 3){
-                    alert(res.data.msg);
-                }else{
-                    alert(res.data.msg);
+            startLoading();
+            axios.post(`http://127.0.0.1:8080/ssmtest/question/insertQuestion`,
+                {
+                    questionId: questionId,
+                    questionContent: questionContent,
+                    questionAnswer: questionAnswer,
+                    questionType: questionType
                 }
-            })
-            .catch(res => {
-            })
-    }
+            )
+                .then(res => {
+                    endLoading();
+                    if (res.data.code === 1) {
+                        alert("添加成功");
+                    } else if (res.data.code === 3) {
+                        alert(res.data.msg);
+                    } else {
+                        alert(res.data.msg);
+                    }
+                })
+                .catch(res => {
+                    endLoading();
+                })
+        }
 
+        function startLoading(){
+            document.getElementById("loading").style.visibility = "visible";
+        }
+
+        function endLoading(){
+            document.getElementById("loading").style.visibility = "hidden";
+        }
+
+        // // 添加请求拦截器
+        // this.$axios.interceptors.request.use(config => {
+        //     $('#loading').show();
+        //     return config
+        // }, error => {
+        //     $('#loading').hide();
+        //     return Promise.reject(error)
+        // })
+
+        // // 添加响应拦截器
+        // this.$axios.interceptors.response.use(response => {
+        //     $('#loading').hide();
+        //     return response
+        // }, error => {
+        //     $('#loading').hide();
+        //     return Promise.reject(error)
+        // })
 
     
 </script>

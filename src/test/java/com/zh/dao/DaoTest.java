@@ -76,9 +76,10 @@ public class DaoTest {
 
     @Test
     public void Test06(){
-        String sql = "insert into ccc values(1,'neo','password')";
-        String tableName = MatcherSQL.matchSql(sql);
-        String nsql = MatcherSQL.changeSqlForAlter(sql,tableName,"##jtmp");
+        String sql = "Insert into ccc values(1,'neo','password')";
+        String nnsql = sql.toLowerCase();
+        String tableName = MatcherSQL.matchSql(nnsql);
+        String nsql = MatcherSQL.changeSqlForAlter(nnsql,tableName,"##jtmp");
         System.out.println(tableName);
         System.out.println(nsql);
     }
