@@ -3,6 +3,11 @@
 
 <!-- 设置为IUserDao接口方法提供sql语句配置 -->
 <mapper namespace="com.zh.dao.IStudentDao">
+<!--    int findAllStudentCount();-->
+
+    <select id="findAllStudentCount" resultType="java.lang.Integer">
+        select count(*) from student
+    </select>
 
     <select id="findStudent" resultType="Student">
         SELECT * FROM student WHERE student_id = #{id}

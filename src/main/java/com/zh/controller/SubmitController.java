@@ -72,7 +72,7 @@ public class SubmitController {
             return VResponse.error(2,"未提交过此题");
         }
     }
-    // 0 未通过 1 已通过 2 sql语句无法执行 3 sql语句执行后结果比对错误 4 sql语句增删查改类型错误 5 sql语句操作的表错误
+    // 0 未通过 1 已通过 2 sql语句无法执行 3 sql语句执行后结果比对错误 4 sql语句增删查改类型错误 5 sql语句操作的表错误 6 标准答案无法执行联系老师
     private int judgeSQLForStudent(Score score){
         //判断是 select 还是 alter 类型
         if(score.getQuestionType() == 1){
@@ -86,7 +86,9 @@ public class SubmitController {
                     return 3;
                 }else if(selectJudge == 1 ){
                     return 1;
-                }else{
+                }else if(selectJudge == -3){
+                    return 6;
+                } else{
                     return 3;
                 }
             }else{
@@ -102,7 +104,20 @@ public class SubmitController {
                 if(!teacherTableName.equals(studentTableName)){
                     return 5;
                 }else{
-                    return 0;
+                    String teacherSql = MatcherSQL.changeSqlForAlter(score.getQuestionAnswer(),teacherTableName,"##atmp2");
+                    String studentSql = MatcherSQL.changeSqlForAlter(score.getStudentAnswer(),studentTableName,"##atmp1");
+                    Integer alterJudge = JdbcForSQLJU.submitJudgeForAlter(studentTableName,teacherSql,studentSql);
+                    if(alterJudge == -3){
+                        return 6;
+                    }else if(alterJudge == -2){
+                        return 2;
+                    }else if(alterJudge == -1){
+                        return 5;
+                    }else if(alterJudge == 1){
+                        return 1;
+                    }else{
+                        return 3;
+                    }
                 }
             }else {
                 return 4;
@@ -143,6 +158,10 @@ public class SubmitController {
             score.setSubmitType(2);
             submitService.insertScoreByStudent(score);
             return VResponse.error(2,"sql语句操作的表错误");
+        }else if(result == 6){
+            score.setSubmitType(2);
+            submitService.insertScoreByStudent(score);
+            return VResponse.error(2,"标准答案可能错误！请联系老师");
         } else{
             score.setSubmitType(2);
             submitService.insertScoreByStudent(score);
@@ -183,6 +202,10 @@ public class SubmitController {
             score.setSubmitType(2);
             submitService.updateScoreByStudent(score);
             return VResponse.error(2,"sql语句操作的表错误");
+        }else if(result == 6){
+            score.setSubmitType(2);
+            submitService.insertScoreByStudent(score);
+            return VResponse.error(2,"标准答案可能错误！请联系老师");
         }else{
             score.setSubmitType(2);
             submitService.updateScoreByStudent(score);

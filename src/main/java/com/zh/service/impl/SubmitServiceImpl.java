@@ -39,4 +39,9 @@ public class SubmitServiceImpl implements ISubmitService {
     public List<Score> findScoreByStudentId(String studentId) {
         return scoreDao.findScoreByStudentId(studentId);
     }
+
+    @Override
+    public int findScoreRightNum(Integer questionId) {
+        return scoreDao.findScoreRightNum(questionId);
+    }
 }

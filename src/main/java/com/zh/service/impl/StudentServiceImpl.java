@@ -41,4 +41,9 @@ public class StudentServiceImpl implements IStudentService{
         return studentDao.deleteStudent(student);
     }
 
+    @Override
+    public int findAllStudentCount() {
+        return studentDao.findAllStudentCount();
+    }
+
 }

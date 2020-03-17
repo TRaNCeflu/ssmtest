@@ -8,6 +8,7 @@ import java.util.List;
 public interface IScoreDao {
     Score findScoreByTwoId(Integer questionId,String StudentId);
     List<Score> findScoreByStudentId(String studentId);
+    int findScoreRightNum(Integer questionId);
     boolean insertScoreByStudent(Score score);
     boolean updateScoreByStudent(Score score);
 

@@ -9,6 +9,7 @@ import java.util.List;
 public interface IStudentDao {
     Student findStudent(String id);
     List<Student> findAllStudentByList();
+    int findAllStudentCount();
     boolean insertStudent(Student student) throws SQLServerException;
     boolean updateStudent(Student student);
     boolean deleteStudent(Student student);

@@ -77,4 +77,27 @@ public class JdbcForSQLJU {
                 });
         return param2Value;
     }
+
+    public static Integer submitJudgeForAlter(final String tableName,final String teacherSql,final String studentSql){
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring-jdbc.xml");
+        JdbcTemplate jdbcTemplate = context.getBean("jdbcTemplate",JdbcTemplate.class);
+        Integer param2Value = (Integer) jdbcTemplate.execute(
+                new CallableStatementCreator() {
+                    public CallableStatement createCallableStatement(Connection con) throws SQLException {
+                        String storedProc = "{call submitJudgeForAlter(?,?,?,?)}";// 调用的sql
+                        CallableStatement cs = con.prepareCall(storedProc);
+                        cs.setString(1, teacherSql);// 设置输入参数的值
+                        cs.setString(2,studentSql);
+                        cs.setString(3,tableName);
+                        cs.registerOutParameter(4, Types.INTEGER);// 注册输出参数的类型
+                        return cs;
+                    }
+                }, new CallableStatementCallback() {
+                    public Object doInCallableStatement(CallableStatement cs) throws SQLException, DataAccessException {
+                        cs.execute();
+                        return cs.getInt(4);// 获取输出参数的值
+                    }
+                });
+        return param2Value;
+    }
 }

@@ -76,7 +76,7 @@ public class DaoTest {
 
     @Test
     public void Test06(){
-        String sql = "Insert into ccc values(1,'neo','password')";
+        String sql = "delete from question where question_id = 1005";
         String nnsql = sql.toLowerCase();
         String tableName = MatcherSQL.matchSql(nnsql);
         String nsql = MatcherSQL.changeSqlForAlter(nnsql,tableName,"##jtmp");
@@ -84,26 +84,6 @@ public class DaoTest {
         System.out.println(nsql);
     }
 
-    @Test
-    public void Test05(){
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring-jdbc.xml");
-        JdbcTemplate jdbcTemplate = context.getBean("jdbcTemplate",JdbcTemplate.class);
-        Integer param2Value = (Integer) jdbcTemplate.execute(
-                con -> {
-                    String storedProc = "{call judgeSQLRight(?,?)}";// 调用的sql
-                    CallableStatement cs = con.prepareCall(storedProc);
-                    cs.setString(1, "select * from ques");// 设置输入参数的值
-                    cs.registerOutParameter(2, Types.INTEGER);// 注册输出参数的类型
-                    return cs;
-                }, new CallableStatementCallback() {
-                    public Object doInCallableStatement(CallableStatement cs) throws SQLException, DataAccessException {
-                        cs.execute();
-                        return cs.getInt(2);// 获取输出参数的值
-                    }
-                });
-        System.out.println(param2Value);
-
-    }
 
 }
 

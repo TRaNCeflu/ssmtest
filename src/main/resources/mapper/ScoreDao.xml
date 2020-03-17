@@ -10,6 +10,11 @@
 <!--    Score findScoreByTwoIdForStudent(Integer questionId,String StudentId);-->
 <!--   boolean updateScoreAfterQuestionUpdate(Question question);-->
 <!--    List<Score> findScoreByStudentId(String studentId);-->
+<!--    int findScoreRightNum(Integer questionId);-->
+
+    <select id="findScoreRightNum" resultType="java.lang.Integer">
+        select count(*) from score where question_id = #{0} and submit_type = 3
+    </select>
 
     <select id="findScoreByTwoId" resultType="Score">
         select * from score where question_id = #{0} and student_id = #{1}

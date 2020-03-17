@@ -15,4 +15,5 @@ public interface IStudentService {
     boolean updateStudent(Student student);
 
     boolean deleteStudent(Student student);
+    int findAllStudentCount();
 }

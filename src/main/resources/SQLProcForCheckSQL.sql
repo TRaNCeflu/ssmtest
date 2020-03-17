@@ -31,6 +31,9 @@ create proc judgeSQLRightForAlter
  as
 begin
 	declare @initTmpTable nvarchar(200)
+	--设置事务隔离级别为serializable
+	set transaction isolation level serializable
+	BEGIN TRANSACTION
 	set @initTmpTable = 'select * into ##jtmp from '+@tableName
 	--是否存在这个表，将这个表复制到临时表##jtmp
 	begin try
@@ -39,9 +42,11 @@ begin
 	begin catch
 		print('不存在此表')
 		set @result = -1
+		commit transaction
 		return @result
 	end catch
 	--在临时表jtmp中执行sql命令，找到被影响的行数@@rowcount
+	
 	begin try
 		exec(@sqlTeacher)
 	end try
@@ -49,12 +54,15 @@ begin
 		print('sql语句执行失败')
 		set @result = 0
 		drop table ##jtmp
+		commit transaction
 		return @result
 	end catch
 
 	set @result = 1
 	drop table ##jtmp
+	commit transaction
 	return @result
+	
 	
 end
 

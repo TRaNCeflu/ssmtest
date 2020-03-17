@@ -12,4 +12,5 @@ public interface ISubmitService {
     boolean updateScoreAfterQuestionUpdate(Question question);
     boolean updateScoreByStudent(Score score);
     List<Score> findScoreByStudentId(String studentId);
+    int findScoreRightNum(Integer questionId);
 }

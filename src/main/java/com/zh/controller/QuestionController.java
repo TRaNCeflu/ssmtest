@@ -5,12 +5,15 @@ import com.zh.common.util.JdbcForSQLJU;
 import com.zh.common.util.MatcherSQL;
 import com.zh.domain.Question;
 import com.zh.domain.QuestionForStudent;
+import com.zh.domain.QuestionPlusSubCount;
 import com.zh.domain.Score;
 import com.zh.service.IQuestionService;
+import com.zh.service.IStudentService;
 import com.zh.service.ISubmitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin
@@ -22,6 +25,9 @@ public class QuestionController {
 
     @Autowired
     private ISubmitService submitService;
+
+    @Autowired
+    private IStudentService studentService;
     @GetMapping("/findAllQuestionForStudent")
     public VResponse<List<QuestionForStudent>> findAllQuestionForStudent(@RequestParam("studentId") String studentId){
         List<QuestionForStudent> questionList = questionService.findAllQuestionForStudent();
@@ -50,9 +56,17 @@ public class QuestionController {
     }
 
     @GetMapping("/findAllQuestion")
-    public VResponse<List<Question>> findAllQuestion(){
+    public VResponse<List<QuestionPlusSubCount>> findAllQuestion(){
         List<Question> questionList = questionService.findAllQuestionList();
-        return VResponse.success(questionList);
+        int studentNum = studentService.findAllStudentCount();
+        List<QuestionPlusSubCount> questionPlusSubCountList = new ArrayList<>();
+        for(int i = 0;i<questionList.size();i++){
+            Question question = questionList.get(i);
+            int rightNum = submitService.findScoreRightNum(question.getQuestionId());
+            questionPlusSubCountList.add(new QuestionPlusSubCount(question.getQuestionId(),question.getQuestionType(),
+                    question.getQuestionContent(), question.getQuestionAnswer(),studentNum,rightNum));
+        }
+        return VResponse.success(questionPlusSubCountList);
     }
 
     @GetMapping("/findQuestionByIdForStudent")
