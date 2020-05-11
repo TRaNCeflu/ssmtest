@@ -59,7 +59,7 @@ public class QuestionController {
     public VResponse<List<QuestionPlusSubCount>> findAllQuestion(){
         List<Question> questionList = questionService.findAllQuestionList();
         int studentNum = studentService.findAllStudentCount();
-        List<QuestionPlusSubCount> questionPlusSubCountList = new ArrayList<>();
+        List<QuestionPlusSubCount> questionPlusSubCountList = new ArrayList<QuestionPlusSubCount>();
         for(int i = 0;i<questionList.size();i++){
             Question question = questionList.get(i);
             int rightNum = submitService.findScoreRightNum(question.getQuestionId());
