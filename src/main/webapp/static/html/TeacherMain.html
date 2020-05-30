@@ -458,18 +458,18 @@ desired effect
 		}
     }
 
-//     //离开当前页面警告
-//     window.onbeforeunload = function(e){
-//         if(isSignout == true || isLogin == false){
-//             return;
-//         }
-//         var e = window.event||e;
-// 　　    e.returnValue=("确定离开当前页面吗？");
-//     }
-//     //离开页面注销信息
-//     window.onunload = function(){
-//         window.sessionStorage.clear();
-//     }
+    //离开当前页面警告
+    window.onbeforeunload = function(e){
+        if(isSignout == true || isLogin == false){
+            return;
+        }
+        var e = window.event||e;
+　　    e.returnValue=("确定离开当前页面吗？");
+    }
+    //离开页面注销信息
+    window.onunload = function(){
+        window.sessionStorage.clear();
+    }
     
 
 
